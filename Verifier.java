@@ -1,17 +1,10 @@
+// Verifier.java (Extends User for verification role)
 public class Verifier extends User {
-    public enum VerificationStatus { VERIFIED, PENDING, REJECTED }
-
     public Verifier(String name) {
         super(name);
     }
 
-    public VerificationStatus verifyProfile(Athlete athlete, Document document) {
-        if (athlete.getAge() < 15) {
-            return VerificationStatus.REJECTED;
-        }
-        if (document.getDocType().equalsIgnoreCase("ID") || document.getDocType().equalsIgnoreCase("Certificate")) {
-            return VerificationStatus.VERIFIED;
-        }
-        return VerificationStatus.PENDING;
+    public void verifyDocument(Document doc) {
+        System.out.println("Document " + doc.getDocType() + " verified by " + getName());
     }
 }

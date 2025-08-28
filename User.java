@@ -1,10 +1,11 @@
+// User.java (Base class for Inheritance)
 public abstract class User {
-    protected String name;
+    private String name;
 
     public User(String name) {
-        if (name == null || name.trim().isEmpty()) throw new IllegalArgumentException("Name cannot be empty");
         this.name = name;
     }
 
     public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 }

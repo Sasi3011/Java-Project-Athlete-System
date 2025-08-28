@@ -1,9 +1,9 @@
+// Document.java
 public class Document {
     private String docType;
-    private String docPath;
+    private String docPath; // Simulated path or details
 
     public Document(String docType, String docPath) {
-        if (docType == null || docPath == null) throw new IllegalArgumentException("Document type or path cannot be null");
         this.docType = docType;
         this.docPath = docPath;
     }
@@ -16,6 +16,9 @@ public class Document {
 
     @Override
     public String toString() {
-        return "Document: " + docType + ", Path: " + docPath;
+        return "Document{" +
+                "docType='" + docType + '\'' +
+                ", docPath='" + docPath + '\'' +
+                '}';
     }
 }
