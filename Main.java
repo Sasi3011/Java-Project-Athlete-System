@@ -32,15 +32,33 @@ public class Main {
             System.out.println("10. Add Mentorship Log");
             System.out.println("11. Search and Generate Report");
             System.out.println("12. View Athlete Details");
-            System.out.println("13. Exit");
+            System.out.println("13. List All Athletes");
+            System.out.println("14. Exit");
             System.out.print("Choose option: ");
             int choice;
             try {
+                // If stdin has been closed (e.g., piped input exhausted), exit gracefully
+                if (!scanner.hasNext()) {
+                    System.out.println("Input closed. Exiting.");
+                    break;
+                }
+                // If the next token is not an int, consume it and prompt again
+                if (!scanner.hasNextInt()) {
+                    String bad = scanner.next();
+                    System.out.println("Error: Please enter a valid number.");
+                    continue;
+                }
                 choice = scanner.nextInt();
                 scanner.nextLine(); // Consume newline
+            } catch (java.util.NoSuchElementException e) {
+                // Handle EOF when calling nextLine/nextInt unexpectedly
+                System.out.println("Input closed. Exiting.");
+                break;
             } catch (Exception e) {
-                System.out.println("Error: Please enter a valid number.");
-                scanner.nextLine(); // Clear invalid input
+                System.out.println("Error: " + e.getMessage());
+                if (scanner.hasNextLine()) {
+                    scanner.nextLine(); // Clear invalid input
+                }
                 continue;
             }
 
@@ -270,11 +288,29 @@ public class Main {
                         scanner.nextLine();
                         break;
                     case 13:
+                        // List all athletes in the system
+                        List<Athlete> allAthletes = profileManager.getAthletes();
+                        System.out.println("\n--- All Athletes ---");
+                        if (allAthletes.isEmpty()) {
+                            System.out.println("No athletes in the system.");
+                        } else {
+                            for (int i = 0; i < allAthletes.size(); i++) {
+                                Athlete a = allAthletes.get(i);
+                                String status = a.isVerified() ? "Verified" : "Not Verified";
+                                String perf = (a.getPerformance() != null) ? (" - " + a.getPerformance().getPrimaryMetric()) : "";
+                                System.out.println((i + 1) + ". " + a.getName() + " (" + a.getSport() + ") - " + status + perf);
+                            }
+                        }
+                        System.out.println("\nPress Enter to continue...");
+                        scanner.nextLine();
+                        break;
+
+                    case 14:
                         running = false;
                         System.out.println("Exiting Athlete Management System. Goodbye!");
                         break;
                     default:
-                        System.out.println("Error: Invalid option. Please choose a number between 1 and 13.");
+                        System.out.println("Error: Invalid option. Please choose a number between 1 and 14.");
                 }
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
